@@ -1,0 +1,14 @@
+--- Modelos MLE para: client13 ---
+throughput_down: GammaModel(k=348.7816817006345, beta=5.872406247678668e-07)
+throughput_up: GammaModel(k=173.13474869748515, beta=5.873662624977433e-07)
+rtt_down: NormalModel(average=0.011747787267080744,std_dev=0.0056517283872945315)
+rtt_up: NormalModel(average=0.012986380434782592,std_dev=0.004990934425914522)
+packet_loss: BinomialModel(p=0.05336099414131432, n=1000)
+
+--- Modelos MLE para: server07 ---
+throughput_down: GammaModel(k=1.7674622620315952, beta=3.018557341886255e-09)
+throughput_up: GammaModel(k=1.3486608158252549, beta=3.0034974377951823e-09)
+rtt_down: NormalModel(average=0.029630383279914522,std_dev=0.0536713091248823)
+rtt_up: NormalModel(average=0.007644834668803407,std_dev=0.0051200759359003424)
+packet_loss: BinomialModel(p=0.016667476713614987, n=1000)
+

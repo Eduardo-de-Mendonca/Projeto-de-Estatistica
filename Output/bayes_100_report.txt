@@ -1,0 +1,75 @@
+USE_MLE_AS_REFERENCE_FOR_PRIORS = False
+--- Inferência Bayesiana (100% Dados) para: client13 ---
+
+Variável: throughput_down
+Assumindo k fixo igual a 348.7816817006345...
+Prior para beta: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior para beta: GammaModel(k=224615.40301545864, beta=382492956961.20807)
+Esperança da posterior (MAP para beta): 5.872406247685205e-07
+Estimativa MLE para beta: 5.872406247678668e-07
+
+Variável: throughput_up
+Assumindo k fixo igual a 173.13474869748515...
+Prior para beta: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior para beta: GammaModel(k=111498.77816143044, beta=189828366523.8754)
+Esperança da posterior (MAP para beta): 5.873662624990604e-07
+Estimativa MLE para beta: 5.873662624977433e-07
+
+Variável: rtt_down
+Assumindo variância fixa igual a 3.194203376375085e-05...
+Prior para a média: NormalModel(average=0.05,std_dev=100)
+Posterior para a média: NormalModel(average=0.011747787267270472,std_dev=0.0002227092977626352)
+Esperança da posterior (MAP para a média): 0.011747787267270472
+Estimativa MLE para a média: 0.011747787267080744
+
+Variável: rtt_up
+Assumindo variância fixa igual a 2.490942644377872e-05...
+Prior para a média: NormalModel(average=0.05,std_dev=100)
+Posterior para a média: NormalModel(average=0.012986380434925757,std_dev=0.00019667036789562997)
+Esperança da posterior (MAP para a média): 0.012986380434925757
+Estimativa MLE para a média: 0.012986380434782592
+
+Variável: packet_loss
+Assumindo n fixo igual a 1000...
+Prior para p: BetaModel(a=1, b=1)
+Posterior para p: BetaModel(a=34365.48022700643, b=609636.5197729935)
+Esperança da posterior (MAP para p): 0.0533623812146646
+Estimativa MLE para p: 0.05336099414131432
+
+--- Inferência Bayesiana (100% Dados) para: server07 ---
+
+Variável: throughput_down
+Assumindo k fixo igual a 1.7674622620315952...
+Prior para beta: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior para beta: GammaModel(k=6617.378709296292, beta=2192232235320.4607)
+Esperança da posterior (MAP para beta): 3.0185573420002936e-09
+Estimativa MLE para beta: 3.018557341886255e-09
+
+Variável: throughput_up
+Assumindo k fixo igual a 1.3486608158252549...
+Prior para beta: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior para beta: GammaModel(k=5049.386094699755, beta=1681168770417.3389)
+Esperança da posterior (MAP para beta): 3.0034974379438887e-09
+Estimativa MLE para beta: 3.0034974377951823e-09
+
+Variável: rtt_down
+Assumindo variância fixa igual a 0.002880609423178674...
+Prior para a média: NormalModel(average=0.05,std_dev=100)
+Posterior para a média: NormalModel(average=0.029630383281481747,std_dev=0.0008771508094144785)
+Esperança da posterior (MAP para a média): 0.029630383281481747
+Estimativa MLE para a média: 0.029630383279914522
+
+Variável: rtt_up
+Assumindo variância fixa igual a 2.621517758938577e-05...
+Prior para a média: NormalModel(average=0.05,std_dev=100)
+Posterior para a média: NormalModel(average=0.007644834668833065,std_dev=8.367745868020369e-05)
+Esperança da posterior (MAP para a média): 0.007644834668833065
+Estimativa MLE para a média: 0.007644834668803407
+
+Variável: packet_loss
+Assumindo n fixo igual a 1000...
+Prior para p: BetaModel(a=1, b=1)
+Posterior para p: BetaModel(a=62404.03281577456, b=3681597.9671842256)
+Esperança da posterior (MAP para p): 0.01666773490392755
+Estimativa MLE para p: 0.016667476713614987
+

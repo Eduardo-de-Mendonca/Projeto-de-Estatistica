@@ -1,0 +1,116 @@
+USE_MLE_AS_REFERENCE_FOR_PRIORS = False
+
+--- Predição Bayesiana (70/30 Split) para: client13 ---
+
+Variável: throughput_down
+Prior: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior (de 70%): GammaModel(k=138053.02157834457, beta=267374850132.41748)
+Modelo Preditivo: ScaledBetaPrimePredictiveModel(a_n=138053.02157834457, k=306.7844923957657, b_n=267374850132.41748)
+Esperança do modelo preditivo: 594170637.5572166
+Variância do modelo preditivo: 1153336803278353.2
+Média real dos dados de teste (30%): 593392303.2411886
+Variância real dos dados de teste (30%): 464712164334687.94
+COMPARAÇÃO (Média): 5.9417e+08 (Predito) vs 5.9339e+08 (Real)
+COMPARAÇÃO (Variância): 1.1533e+15 (Predito) vs 4.6471e+14 (Real)
+
+Variável: throughput_up
+Prior: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior (de 70%): GammaModel(k=116834.97923056735, beta=132664325426.85573)
+Modelo Preditivo: ScaledBetaPrimePredictiveModel(a_n=116834.97923056735, k=259.633287178483, b_n=132664325426.85573)
+Esperança do modelo preditivo: 294812135.3798667
+Variância do modelo preditivo: 335504302989927.0
+Média real dos dados de teste (30%): 294660005.65474045
+Variância real dos dados de teste (30%): 412329297436807.3
+COMPARAÇÃO (Média): 2.9481e+08 (Predito) vs 2.9466e+08 (Real)
+COMPARAÇÃO (Variância): 3.3550e+14 (Predito) vs 4.1233e+14 (Real)
+
+Variável: rtt_down
+Prior: NormalModel(average=0.05,std_dev=100)
+Posterior (de 70%): NormalModel(average=0.011688322222496331,std_dev=0.00026748318246130036)
+Modelo Preditivo: NormalModel(average=0.011688322222496331,std_dev=3.226781105796136e-05)
+Esperança do modelo preditivo: 0.011688322222496331
+Variância do modelo preditivo: 1.0412116304722934e-09
+Média real dos dados de teste (30%): 0.011885721649484536
+Variância real dos dados de teste (30%): 3.1325096736953974e-05
+COMPARAÇÃO (Média): 1.1688e-02 (Predito) vs 1.1886e-02 (Real)
+COMPARAÇÃO (Variância): 1.0412e-09 (Predito) vs 3.1325e-05 (Real)
+
+Variável: rtt_up
+Prior: NormalModel(average=0.05,std_dev=100)
+Posterior (de 70%): NormalModel(average=0.012740208888958703,std_dev=0.00013689881238124107)
+Modelo Preditivo: NormalModel(average=0.012740208888958703,std_dev=8.452319458974608e-06)
+Esperança do modelo preditivo: 0.012740208888958703
+Variância do modelo preditivo: 7.144170423656082e-11
+Média real dos dados de teste (30%): 0.013557396907216477
+Variância real dos dados de teste (30%): 6.265997244555751e-05
+COMPARAÇÃO (Média): 1.2740e-02 (Predito) vs 1.3557e-02 (Real)
+COMPARAÇÃO (Variância): 7.1442e-11 (Predito) vs 6.2660e-05 (Real)
+
+Variável: packet_loss
+Prior: BetaModel(a=1, b=1)
+Posterior (de 70%): BetaModel(a=23934.31895664039, b=426067.6810433596)
+Modelo Preditivo: BetaBinomialPredictiveModel(a_n=23934.31895664039, b_n=426067.6810433596, n_star=1000)
+Esperança do modelo preditivo: 53.1871390719161
+Variância do modelo preditivo: 50.47006191738993
+Média real dos dados de teste (30%): 53.76887252766001
+Variância real dos dados de teste (30%): 155.13197369715732
+COMPARAÇÃO (Média): 5.3187e+01 (Predito) vs 5.3769e+01 (Real)
+COMPARAÇÃO (Variância): 5.0470e+01 (Predito) vs 1.5513e+02 (Real)
+
+--- Predição Bayesiana (70/30 Split) para: server07 ---
+
+Variável: throughput_down
+Prior: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior (de 70%): GammaModel(k=4370.881153022547, beta=1482699747225.7512)
+Modelo Preditivo: ScaledBetaPrimePredictiveModel(a_n=4370.881153022547, k=1.668275249149827, b_n=1482699747225.7512)
+Esperança do modelo preditivo: 566045437.7589942
+Variância do modelo preditivo: 1.921763960871987e+17
+Média real dos dados de teste (30%): 631256662.0059692
+Variância real dos dados de teste (30%): 1.0286097903875088e+17
+COMPARAÇÃO (Média): 5.6605e+08 (Predito) vs 6.3126e+08 (Real)
+COMPARAÇÃO (Variância): 1.9218e+17 (Predito) vs 1.0286e+17 (Real)
+
+Variável: throughput_up
+Prior: GammaModel(k=2.5e-07, beta=5e-06)
+Posterior (de 70%): GammaModel(k=3579.6896577138427, beta=1130679485939.5527)
+Modelo Preditivo: ScaledBetaPrimePredictiveModel(a_n=3579.6896577138427, k=1.3662937623907796, b_n=1130679485939.5527)
+Esperança do modelo preditivo: 431677646.4739072
+Variância do modelo preditivo: 1.3647785350649683e+17
+Média real dos dados de teste (30%): 489759149.8912688
+Variância real dos dados de teste (30%): 9.803396364224731e+16
+COMPARAÇÃO (Média): 4.3168e+08 (Predito) vs 4.8976e+08 (Real)
+COMPARAÇÃO (Variância): 1.3648e+17 (Predito) vs 9.8034e+16 (Real)
+
+Variável: rtt_down
+Prior: NormalModel(average=0.05,std_dev=100)
+Posterior (de 70%): NormalModel(average=0.029905889315268167,std_dev=0.001067786802579243)
+Modelo Preditivo: NormalModel(average=0.029905889315268167,std_dev=0.0029883820470938544)
+Esperança do modelo preditivo: 0.029905889315268167
+Variância do modelo preditivo: 8.930427259392856e-06
+Média real dos dados de teste (30%): 0.028988189501779348
+Variância real dos dados de teste (30%): 0.0026314640030841987
+COMPARAÇÃO (Média): 2.9906e-02 (Predito) vs 2.8988e-02 (Real)
+COMPARAÇÃO (Variância): 8.9304e-06 (Predito) vs 2.6315e-03 (Real)
+
+Variável: rtt_up
+Prior: NormalModel(average=0.05,std_dev=100)
+Posterior (de 70%): NormalModel(average=0.0076727480916411175,std_dev=9.484590051430144e-05)
+Modelo Preditivo: NormalModel(average=0.0076727480916411175,std_dev=2.3577847237111734e-05)
+Esperança do modelo preditivo: 0.0076727480916411175
+Variância do modelo preditivo: 5.559148803365774e-10
+Média real dos dados de teste (30%): 0.007579769572953725
+Variância real dos dados de teste (30%): 3.237761047270406e-05
+COMPARAÇÃO (Média): 7.6727e-03 (Predito) vs 7.5798e-03 (Real)
+COMPARAÇÃO (Variância): 5.5591e-10 (Predito) vs 3.2378e-05 (Real)
+
+Variável: packet_loss
+Prior: BetaModel(a=1, b=1)
+Posterior (de 70%): BetaModel(a=52811.1220066743, b=2567190.8779933257)
+Modelo Preditivo: BetaBinomialPredictiveModel(a_n=52811.1220066743, b_n=2567190.8779933257, n_star=1000)
+Esperança do modelo preditivo: 20.15690140949293
+Variância do modelo preditivo: 19.758131585267698
+Média real dos dados de teste (30%): 8.534618157562518
+Variância real dos dados de teste (30%): 389.10143638874086
+COMPARAÇÃO (Média): 2.0157e+01 (Predito) vs 8.5346e+00 (Real)
+COMPARAÇÃO (Variância): 1.9758e+01 (Predito) vs 3.8910e+02 (Real)
+

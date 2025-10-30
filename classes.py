@@ -1,11 +1,37 @@
 import csv
 import pandas as pd
 import re
-import matplotlib.pyplot as plt
 import os
-from scipy.stats import gamma
-from math import isclose
-from settings import *
+
+from utilities import *
+
+VAR_DETAILS = {
+    'throughput_down': {
+        'name': 'Throughput de Download',
+        'unit': 'bps', 
+        'model_mle': GammaModel, 
+    },
+    'throughput_up':   {
+        'name': 'Throughput de Upload',
+        'unit': 'bps', 
+        'model_mle': GammaModel, 
+    },
+    'rtt_down':        {
+        'name': 'RTT de Download',
+        'unit': 's', 
+        'model_mle': NormalModel, 
+    },
+    'rtt_up':          {
+        'name': 'RTT de Upload',
+        'unit': 's', 
+        'model_mle': NormalModel, 
+    },
+    'packet_loss':     {
+        'name': f'Perda de Pacotes (contagem de {BINOMIAL_FIXED_N})',
+        'unit': '(quantidade)', 
+        'model_mle': BinomialModel, 
+    }
+}
 
 class Results:
     'Para guardar os resultados e escrever em um arquivo'
@@ -18,95 +44,9 @@ class Results:
     def generate_file(self, file_name):
         with open(file_name, 'w', encoding='utf-8') as file:
             file.write(self.string)
-
-class VariableData:
-    'Representa uma lista de dados associada a uma variável específica'
-    def __init__(self):
-        self.data = []
-
-    def average(self):
-        return sum(self.data)/len(self.data)
     
-    def median(self):
-        return self.percentile(50)
-        
-    def variance(self):
-        s = 0
-        avg = self.average()
-
-        for d in self.data:
-            s += (d - avg)**2
-        
-        return s/len(self.data) # Dividimos por n, e não n - 1
-    
-    def std_deviation(self):
-        return self.variance()**(1/2)
-
-    def percentile(self, p):
-        'Retorna o p-ésimo percentil. Isto é, o menor x nos dados tal que ao menos p% das amostras são menores que ou iguais a x'
-        sorted_data = sorted(self.data)
-
-        n = len(sorted_data)
-        assert n >= 1
-        i = (p*(n - 1))//100 # Arredondei para baixo
-
-        # Exemplo: p = 50 e n = 3
-        # i = 1 (deu certo)
-        # 66% das amostras são menores que ou iguais
-
-        # Outro exemplo: p = 75 e n = 4
-        # i = 2
-        # É o penúltimo. 75% das amostras são menores ou iguais
-        # Se fosse o anterior, 50% seriam menores ou iguais. Então tá certo
-        return sorted_data[i]
-
-    def mle_normal_avg(self):
-        return self.average()
-    
-    def mle_normal_variance(self):
-        return self.variance()
-
-    def mle_binomial_p(self, fixed_n):
-        '''
-        Assumimos que cada dado é uma taxa percentual x. Interpretamos cada dado como sendo uma quantidade de sucessos, igual a (x %)(fixed_n).
-        '''
-        assert fixed_n >= 1
-        # O MLE binomial é a soma de todas as quantidades de sucessos dividido pela soma de todas as quantidades de experimentos
-        successes = 0
-        total_experiments = 0
-        for x in self.data:
-            relative = x/100 # Pois a taxa vem percentual
-            successes += relative*fixed_n
-            total_experiments += fixed_n # Em cada ponto, temos mais n experimentos
-
-        return successes/total_experiments
-    
-    def mle_gamma_k(self):
-        shape, loc_result, scale = gamma.fit(self.data, floc=0)
-        assert isclose(loc_result, 0)
-        return shape
-    
-    def mle_gamma_beta(self):
-        shape, loc_result, scale = gamma.fit(self.data, floc=0)
-        assert isclose(loc_result, 0)
-        return scale
-
-class Server:
-    'Representa um servidor'
-    def __init__(self):
-        # Em bps
-        self.throughput_down = VariableData()
-        self.throughput_up = VariableData()
-
-        # Em segundos
-        self.rtt_down = VariableData()
-        self.rtt_up = VariableData()
-
-        # Em %
-        self.packet_loss = VariableData()
-
-class Client:
-    'Representa um cliente'
+class NetworkEntity:
+    'Representa uma entidade de rede (cliente ou servidor)'
     def __init__(self):
         # Em bps
         self.throughput_down = VariableData()
@@ -124,8 +64,8 @@ class GraphGenerator:
     Gera todos os gráficos para um par de cliente e servidor selecionados
     '''
     def __init__(self, client_obj, client_name, server_obj, server_name, output_dir):
-        assert isinstance(client_obj, Client)
-        assert isinstance(server_obj, Server)
+        assert isinstance(client_obj, NetworkEntity)
+        assert isinstance(server_obj, NetworkEntity)
 
         self.client = client_obj
         self.client_name = client_name
@@ -135,15 +75,9 @@ class GraphGenerator:
         self.output_dir = output_dir
 
         # Dicionário auxiliar para nomes e unidades dos gráficos
-        self.var_details = {
-            'throughput_down': {'name': 'Throughput de Download', 'unit': 'bps'},
-            'throughput_up':   {'name': 'Throughput de Upload', 'unit': 'bps'},
-            'rtt_down':        {'name': 'RTT de Download', 'unit': 's'},
-            'rtt_up':          {'name': 'RTT de Upload', 'unit': 's'},
-            'packet_loss':     {'name': 'Perda de Pacotes', 'unit': '%'}
-        }
+        self.var_details = VAR_DETAILS
 
-    def _plot_boxplot(self, client_data, server_data, var_name_key):
+    def __plot_boxplot(self, client_data, server_data, var_name_key):
         """
         Gera um boxplot pareado para os dados de cliente e servidor.
 
@@ -191,7 +125,7 @@ class GraphGenerator:
             var_data = getattr(self.server, var_key)
             assert isinstance(var_data, VariableData)
             server_data = var_data.data
-            self._plot_boxplot(client_data, server_data, var_key)
+            self.__plot_boxplot(client_data, server_data, var_key)
 
     def plot_scatter_plots(self):
         """Gera os 2 scatter plots de correlação."""
@@ -228,8 +162,7 @@ class GraphGenerator:
         plt.savefig(filename)
         plt.close()
 
-
-    def _plot_histogram(self, data, entity_name, var_name_key):
+    def __plot_histogram(self, data, entity_name, var_name_key, model = None):
         """Gera um único histograma."""
         details = self.var_details[var_name_key]
         title_name = details['name']
@@ -237,40 +170,74 @@ class GraphGenerator:
 
         plt.figure(figsize=HISTOGRAM_FIGSIZE)
         
-        # 'bins="auto"' usa um estimador inteligente (ex: Freedman-Diaconis)
-        # para decidir o número de barras.
-        plt.hist(data, bins='auto', edgecolor='black', alpha=HISTOGRAM_ALPHA)
+        # 'bins="auto"' usa um estimador inteligente (ex: Freedman-Diaconis) para decidir o número de barras.
+        # Esta linha desenha o histograma de fato
+        counts, bin_edges, patches = plt.hist(data, bins='auto', edgecolor='black', alpha=HISTOGRAM_ALPHA)
         
+
+        if model != None:
+            assert isinstance(model, Model)
+            bin_width = bin_edges[1] - bin_edges[0]
+            scale_factor = bin_width*len(data)
+            model.draw(scale_factor)
+        
+        # Esse pedaço escreve textos/legendas
         plt.title(f'Histograma de {title_name} ({entity_name})')
         plt.xlabel(f'{title_name} ({unit})')
         plt.ylabel('Frequência')
-        plt.grid(axis='y', linestyle='--', alpha=HISTOGRAM_GRID_ALPHA)
-        
+        plt.legend() # Põe legenda em tudo que tem label (nesse caso, na pdf do modelo)
         filename = os.path.join(self.output_dir, f'hist_{entity_name}_{var_name_key}.png')
         plt.savefig(filename)
         plt.close()
-
         
-    def plot_all_histograms(self):
+    def plot_all_histograms(self, draw_mle_models = False):
         """Gera os 10 histogramas (5 para cliente, 5 para servidor)."""
         for var_key in self.var_details.keys():
-            # Gráfico do Cliente
-            var_data = getattr(self.client, var_key)
-            assert isinstance(var_data, VariableData)
-            self._plot_histogram(
-                var_data.data, 
-                self.client_name, 
-                var_key
-            )
+            for entity, name in ((self.client, self.client_name), (self.server, self.server_name)):
+                var_data = getattr(entity, var_key)
+                assert isinstance(var_data, VariableData)
 
-            # Gráfico do Servidor
-            var_data = getattr(self.client, var_key)
-            assert isinstance(var_data, VariableData)
-            self._plot_histogram(
-                var_data.data, 
-                self.server_name, 
-                var_key
-            )
+                model = None
+                if draw_mle_models:
+                    model_class = self.var_details[var_key]['model_mle']
+                    assert issubclass(model_class, Model)
+                    model = model_class.from_mle(var_data)
+
+                # Gráficos
+                self.__plot_histogram(
+                    var_data.data, 
+                    name, 
+                    var_key,
+                    model
+                )
+    
+    def __plot_qq(self, data, entity_name, var_name_key, model):
+        """Chama o método de plotagem QQ do modelo."""
+        assert isinstance(model, Model)
+        
+        filename = os.path.join(self.output_dir, f'qq_{entity_name}_{var_name_key}.png')
+        
+        model.draw_qq_plot(data, filename)
+
+    def plot_all_qq_plots(self):
+        """Gera os 10 QQ plots (5 para cliente, 5 para servidor)."""
+        for var_key in self.var_details.keys():
+            for entity, name in ((self.client, self.client_name), (self.server, self.server_name)):
+                var_data = getattr(entity, var_key)
+                assert isinstance(var_data, VariableData)
+
+                model_mle = None
+                model_class = self.var_details[var_key]['model_mle']
+                assert issubclass(model_class, Model)
+                
+                model_mle = model_class.from_mle(var_data)
+
+                self.__plot_qq(
+                    var_data.data,
+                    name,
+                    var_key,
+                    model_mle
+                )
 
 class AllData:
     def __init__(self, path):
@@ -297,6 +264,9 @@ class AllData:
                 client_name = row[6]
                 server_name = row[7]
 
+                # Packet_loss é uma porcentagem. Transformaremos em uma quantidade de pacotes perdidos, multiplicando por fixed_n
+                packet_loss = (packet_loss/100)*BINOMIAL_FIXED_N
+
                 invalid = False
                 for x in download_throughput, rtt_download, upload_throughput, rtt_upload, packet_loss:
                     if x < 0: invalid = True # Ignorar linhas com valor negativo
@@ -304,18 +274,18 @@ class AllData:
 
                 # Cria um novo objeto Client se for a primeira vez que o vemos
                 if client_name not in self.clients:
-                    self.clients[client_name] = Client()
+                    self.clients[client_name] = NetworkEntity()
                 
                 # Cria um novo objeto Server se for a primeira vez que o vemos
                 if server_name not in self.servers:
-                    self.servers[server_name] = Server()
+                    self.servers[server_name] = NetworkEntity()
 
                 # Obtém os objetos correspondentes para adicionar os novos dados
                 current_client = self.clients[client_name]
                 current_server = self.servers[server_name]
 
-                assert isinstance(current_client, Client)
-                assert isinstance(current_server, Server)
+                assert isinstance(current_client, NetworkEntity)
+                assert isinstance(current_server, NetworkEntity)
 
                 # Adiciona os dados ao cliente
                 current_client.throughput_down.data.append(download_throughput)
@@ -520,11 +490,11 @@ class AllData:
 
         result = Results()
         for name, obj in self.clients.items():
-            assert isinstance(obj, Client)
+            assert isinstance(obj, NetworkEntity)
             n = len(obj.packet_loss.data)
             result.write(f'{name}: {n} pontos')
         for name, obj in self.servers.items():
-            assert isinstance(obj, Server)
+            assert isinstance(obj, NetworkEntity)
             n = len(obj.packet_loss.data)
             result.write(f'{name}: {n} pontos')
 
@@ -557,3 +527,198 @@ class AllData:
         plotter.plot_all_boxplots()
         plotter.plot_scatter_plots()
         plotter.plot_all_histograms()
+
+    def write_mle_models_to_file(self):
+        """
+        Calcula e escreve todos os modelos MLE (usando __repr__) para 
+        os clientes e servidores selecionados em um arquivo.
+        """
+        client_name = 'client13'
+        server_name = 'server07'
+        entities = {
+            client_name: self.clients[client_name],
+            server_name: self.servers[server_name]
+        }
+        
+        results = Results()
+        details = VAR_DETAILS
+
+        for name, entity in entities.items():
+            results.write(f"--- Modelos MLE para: {name} ---")
+            for var_key, var_info in details.items():
+                var_data = getattr(entity, var_key)
+                model_class = var_info['model_mle']
+                
+                assert issubclass(model_class, Model)
+                if model_class == BinomialModel:
+                    model_mle = model_class.from_mle(var_data)
+                else:
+                    model_mle = model_class.from_mle(var_data)
+                
+                results.write(f"{var_key}: {model_mle}")
+            results.skipline()
+        
+        results.generate_file('Output/mle_models.txt')
+
+    def plot_mle_models(self):
+        # --- 1. Selecionar os objetos ---
+        client_name_to_select = 'client13'
+        server_name_to_select = 'server07'
+        output_dir = 'Output/MLEgraphs'
+
+        client_obj = self.clients[client_name_to_select]
+
+        server_obj = self.servers[server_name_to_select]
+
+        # --- 2. Instanciar o Gerador ---
+        plotter = GraphGenerator(
+            client_obj, 
+            client_name_to_select, 
+            server_obj, 
+            server_name_to_select,
+            output_dir
+        )
+
+        plotter.plot_all_histograms(True)
+        plotter.plot_all_qq_plots()
+
+    def run_bayesian_inference_100(self):
+        """
+        Roda a inferência Bayesiana com 100% dos dados e compara 
+        E[theta|data] com o MLE.
+        """
+
+        client_name = 'client13'
+        server_name = 'server07'
+        entities = {
+            client_name: self.clients[client_name],
+            server_name: self.servers[server_name]
+        }
+        results = Results()
+        results.write(f'USE_MLE_AS_REFERENCE_FOR_PRIORS = {USE_MLE_AS_REFERENCE_FOR_PRIORS}')
+
+        for name, entity in entities.items():
+            results.write(f"--- Inferência Bayesiana (100% Dados) para: {name} ---")
+            for var_key, var_info in VAR_DETAILS.items():
+                results.skipline()
+                results.write(f"Variável: {var_key}")
+                
+                var_data = getattr(entity, var_key)
+                model_mle_class = var_info['model_mle']
+                
+                # Calcular MLE
+                assert issubclass(model_mle_class, Model)
+                model_mle = model_mle_class.from_mle(var_data)
+                
+                # Calcular Prior (Lógica Empírica) e Posterior
+                if var_key == 'packet_loss':
+                    # Likelihood Binomial, Prior Beta (Fixa)
+                    prior = choose_prior(model_mle)
+                    posterior = prior.calculate_posterior(var_data, fixed_n=BINOMIAL_FIXED_N)
+                    
+                    results.write(f'Assumindo n fixo igual a {BINOMIAL_FIXED_N}...')
+                    results.write(f'Prior para p: {prior}')
+                    results.write(f'Posterior para p: {posterior}')
+                    results.write(f"Esperança da posterior (MAP para p): {posterior.expected_value()}")
+
+                    results.write(f"Estimativa MLE para p: {model_mle.p}")
+
+                elif 'rtt' in var_key:
+                    prior = choose_prior(model_mle)
+                    
+                    sigma_sq_known = model_mle.std_dev**2
+                    posterior = prior.calculate_posterior(var_data, sigma_sq_known)
+                    
+                    results.write(f'Assumindo variância fixa igual a {sigma_sq_known}...')
+                    results.write(f'Prior para a média: {prior}')
+                    results.write(f'Posterior para a média: {posterior}')
+                    results.write(f"Esperança da posterior (MAP para a média): {posterior.expected_value()}")
+                    results.write(f"Estimativa MLE para a média: {model_mle.average}")
+            
+                elif 'throughput' in var_key:
+                    k_fixed = model_mle.k
+                    
+                    prior = choose_prior(model_mle)
+                    
+                    posterior = prior.calculate_posterior(var_data, k_fixed)
+                    
+                    results.write(f'Assumindo k fixo igual a {k_fixed}...')
+                    results.write(f'Prior para beta: {prior}')
+                    results.write(f'Posterior para beta: {posterior}')
+                    results.write(f'Esperança da posterior (MAP para beta): {posterior.expected_value()}')
+                    results.write(f"Estimativa MLE para beta: {model_mle.beta}")
+                
+            results.skipline()
+
+        results.generate_file('Output/bayes_100_report.txt')
+
+    def run_bayesian_inference_70_30(self):
+        """
+        Roda a inferência com 70% dos dados, calcula o preditivo e compara com os 30% de teste.
+        """
+        client_name = 'client13'
+        server_name = 'server07'
+        entities = {
+            client_name: self.clients[client_name],
+            server_name: self.servers[server_name]
+        }
+        results = Results()
+        results.write(f'USE_MLE_AS_REFERENCE_FOR_PRIORS = {USE_MLE_AS_REFERENCE_FOR_PRIORS}\n')
+
+        for name, entity in entities.items():
+            results.write(f"--- Predição Bayesiana (70/30 Split) para: {name} ---")
+            for var_key, var_info in VAR_DETAILS.items():
+                results.skipline()
+                results.write(f"Variável: {var_key}")
+                
+                var_data_full = getattr(entity, var_key)
+                assert isinstance(var_data_full, VariableData)
+                vd_train, vd_test = var_data_full.split_data(train_frac=0.7)
+                
+                # Calcular estatísticas reais dos dados de teste (30%)
+                test_avg = vd_test.average()
+                test_var = vd_test.variance()
+
+                # Calcular Posterior (usando 70% de treino)
+                model_mle_class = var_info['model_mle']
+                
+                # Calcular MLE dos dados de treino (para priors empíricas e params. fixos)
+                assert issubclass(model_mle_class, Model)
+                model_mle_train = model_mle_class.from_mle(vd_train)
+                prior = choose_prior(model_mle_train) # Usa o MLE de treino para a prior (quando relevante)
+                
+                # Calcular Posterior e Modelo Preditivo
+                if 'rtt' in var_key:
+                    assert isinstance(model_mle_train, NormalModel)
+                    sigma_sq_known = model_mle_train.std_dev**2
+                    posterior = prior.calculate_posterior(vd_train, sigma_sq_known)
+                    pred_model = NormalModel.from_posterior(posterior, sigma_sq_known)
+                
+                elif var_key == 'packet_loss':
+                    posterior = prior.calculate_posterior(vd_train, fixed_n=BINOMIAL_FIXED_N)
+                    pred_model = BetaBinomialPredictiveModel.from_posterior(posterior, n_star=BINOMIAL_FIXED_N)
+                
+                elif 'throughput' in var_key:
+                    assert isinstance(model_mle_train, GammaModel)
+                    k_known = model_mle_train.k
+                    posterior = prior.calculate_posterior(vd_train, k_known)
+                    pred_model = ScaledBetaPrimePredictiveModel.from_posterior(posterior, k_known)
+                
+                # Obter estatísticas preditivas
+                pred_avg = pred_model.expected_value()
+                pred_var = pred_model.variance()
+                
+                # Escrever resultados
+                results.write(f'Prior: {prior}')
+                results.write(f"Posterior (de 70%): {posterior}")
+                results.write(f"Modelo Preditivo: {pred_model}")
+                results.write(f"Esperança do modelo preditivo: {pred_avg}")
+                results.write(f'Variância do modelo preditivo: {pred_var}')
+                results.write(f"Média real dos dados de teste (30%): {test_avg}")
+                results.write(f'Variância real dos dados de teste (30%): {test_var}')
+                results.write(f"COMPARAÇÃO (Média): {pred_avg:.4e} (Predito) vs {test_avg:.4e} (Real)")
+                results.write(f"COMPARAÇÃO (Variância): {pred_var:.4e} (Predito) vs {test_var:.4e} (Real)")
+
+            results.skipline()
+        
+        results.generate_file('Output/bayes_70_30_report.txt')

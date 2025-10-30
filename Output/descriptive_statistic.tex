@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs} % Para tabelas mais bonitas
+\usepackage{amsmath}  % Para o comando \times
+\usepackage{caption}
+\captionsetup{labelformat=empty}
+\usepackage{graphicx} % NOVO: Para usar \resizebox
+\usepackage{float}    % NOVO: Para forçar a posição com [H]
+\usepackage[landscape, margin=1cm]{geometry}
+\begin{document}
+
+%================================================================================
+%Estatísticas para: Throughput de Download (bps)
+%================================================================================
+
+%--- Tabela de Clientes ---
+\begin{table}[H]
+\centering
+\caption{Clientes: Throughput de Download (bps)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+ & client01 & client02 & client03 & client04 & client05 & client06 & client07 & client08 & client09 & client10 & client11 & client12 & client13 \\
+\midrule
+Média & $6.5033 \times 10^{8}$ & $6.3931 \times 10^{8}$ & $6.1443 \times 10^{8}$ & $5.8376 \times 10^{8}$ & $3.0953 \times 10^{8}$ & $6.1226 \times 10^{8}$ & $6.3091 \times 10^{8}$ & $2.3389 \times 10^{8}$ & $6.4524 \times 10^{8}$ & $2.3179 \times 10^{8}$ & $5.0463 \times 10^{8}$ & $4.6477 \times 10^{8}$ & $5.9393 \times 10^{8}$ \\
+Variância & $1.1925 \times 10^{17}$ & $1.0571 \times 10^{17}$ & $1.0859 \times 10^{17}$ & $1.1838 \times 10^{17}$ & $1.1183 \times 10^{17}$ & $1.1551 \times 10^{17}$ & $1.0970 \times 10^{17}$ & $8.5328 \times 10^{16}$ & $1.2303 \times 10^{17}$ & $2.7527 \times 10^{16}$ & $8.3059 \times 10^{16}$ & $8.1027 \times 10^{16}$ & $4.8433 \times 10^{14}$ \\
+Desvio-padrão & $3.4532 \times 10^{8}$ & $3.2513 \times 10^{8}$ & $3.2952 \times 10^{8}$ & $3.4406 \times 10^{8}$ & $3.3441 \times 10^{8}$ & $3.3987 \times 10^{8}$ & $3.3121 \times 10^{8}$ & $2.9211 \times 10^{8}$ & $3.5075 \times 10^{8}$ & $1.6591 \times 10^{8}$ & $2.8820 \times 10^{8}$ & $2.8465 \times 10^{8}$ & $2.2008 \times 10^{7}$ \\
+0-percentil (mínimo) & $2.5674 \times 10^{7}$ & $3.5659 \times 10^{6}$ & $4.2787 \times 10^{7}$ & $3.3276 \times 10^{7}$ & $9.5302 \times 10^{5}$ & $5.0777 \times 10^{7}$ & $3.8972 \times 10^{7}$ & $2.0411 \times 10^{7}$ & $2.4672 \times 10^{6}$ & $3.6766 \times 10^{6}$ & $2.6923 \times 10^{7}$ & $1.6424 \times 10^{7}$ & $1.3299 \times 10^{8}$ \\
+25-percentil & $1.8011 \times 10^{8}$ & $1.7893 \times 10^{8}$ & $1.7799 \times 10^{8}$ & $1.7287 \times 10^{8}$ & $1.0498 \times 10^{8}$ & $1.7798 \times 10^{8}$ & $1.7300 \times 10^{8}$ & $9.4467 \times 10^{7}$ & $1.7933 \times 10^{8}$ & $7.7880 \times 10^{7}$ & $1.4334 \times 10^{8}$ & $8.7094 \times 10^{7}$ & $5.9361 \times 10^{8}$ \\
+50-percentil (mediana) & $8.9279 \times 10^{8}$ & $8.2413 \times 10^{8}$ & $8.1247 \times 10^{8}$ & $7.9960 \times 10^{8}$ & $1.0696 \times 10^{8}$ & $8.3066 \times 10^{8}$ & $8.3443 \times 10^{8}$ & $9.6396 \times 10^{7}$ & $8.9404 \times 10^{8}$ & $2.2093 \times 10^{8}$ & $6.9064 \times 10^{8}$ & $6.3599 \times 10^{8}$ & $5.9614 \times 10^{8}$ \\
+75-percentil & $9.1071 \times 10^{8}$ & $9.0239 \times 10^{8}$ & $8.8861 \times 10^{8}$ & $8.8990 \times 10^{8}$ & $7.8821 \times 10^{8}$ & $8.9757 \times 10^{8}$ & $8.9393 \times 10^{8}$ & $1.7438 \times 10^{8}$ & $9.1292 \times 10^{8}$ & $4.0937 \times 10^{8}$ & $7.5588 \times 10^{8}$ & $6.8866 \times 10^{8}$ & $5.9765 \times 10^{8}$ \\
+100-percentil (máximo) & $9.3228 \times 10^{8}$ & $9.3131 \times 10^{8}$ & $9.3033 \times 10^{8}$ & $9.2851 \times 10^{8}$ & $9.1934 \times 10^{8}$ & $9.2779 \times 10^{8}$ & $9.2688 \times 10^{8}$ & $9.2850 \times 10^{8}$ & $9.3327 \times 10^{8}$ & $4.2504 \times 10^{8}$ & $8.0269 \times 10^{8}$ & $8.1190 \times 10^{8}$ & $6.0126 \times 10^{8}$ \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+%--- Tabela de Servidores ---
+\begin{table}[H]
+\centering
+\caption{Servidores: Throughput de Download (bps)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & server01 & server02 & server03 & server04 & server05 & server06 & server07 \\
+\midrule
+Média & $6.4223 \times 10^{8}$ & $6.3666 \times 10^{8}$ & $6.3843 \times 10^{8}$ & $1.9692 \times 10^{8}$ & $2.0120 \times 10^{8}$ & $2.0560 \times 10^{8}$ & $5.8553 \times 10^{8}$ \\
+Variância & $7.2097 \times 10^{16}$ & $7.6901 \times 10^{16}$ & $7.7516 \times 10^{16}$ & $3.1388 \times 10^{16}$ & $3.3443 \times 10^{16}$ & $3.6339 \times 10^{16}$ & $1.0783 \times 10^{17}$ \\
+Desvio-padrão & $2.6851 \times 10^{8}$ & $2.7731 \times 10^{8}$ & $2.7842 \times 10^{8}$ & $1.7717 \times 10^{8}$ & $1.8288 \times 10^{8}$ & $1.9063 \times 10^{8}$ & $3.2837 \times 10^{8}$ \\
+0-percentil (mínimo) & $2.2532 \times 10^{7}$ & $1.7438 \times 10^{7}$ & $5.6934 \times 10^{6}$ & $1.6424 \times 10^{7}$ & $2.4672 \times 10^{6}$ & $3.9938 \times 10^{6}$ & $9.5302 \times 10^{5}$ \\
+25-percentil & $5.3494 \times 10^{8}$ & $4.6883 \times 10^{8}$ & $4.2293 \times 10^{8}$ & $8.6142 \times 10^{7}$ & $8.5506 \times 10^{7}$ & $8.4784 \times 10^{7}$ & $1.7649 \times 10^{8}$ \\
+50-percentil (mediana) & $7.6113 \times 10^{8}$ & $7.6183 \times 10^{8}$ & $7.6825 \times 10^{8}$ & $1.6841 \times 10^{8}$ & $1.6882 \times 10^{8}$ & $1.6956 \times 10^{8}$ & $7.0926 \times 10^{8}$ \\
+75-percentil & $8.4245 \times 10^{8}$ & $8.4898 \times 10^{8}$ & $8.5341 \times 10^{8}$ & $1.7818 \times 10^{8}$ & $1.7810 \times 10^{8}$ & $1.7884 \times 10^{8}$ & $8.9911 \times 10^{8}$ \\
+100-percentil (máximo) & $9.1934 \times 10^{8}$ & $9.2390 \times 10^{8}$ & $9.2316 \times 10^{8}$ & $7.9886 \times 10^{8}$ & $7.8024 \times 10^{8}$ & $7.9647 \times 10^{8}$ & $9.3327 \times 10^{8}$ \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+
+%================================================================================
+%Estatísticas para: Throughput de Upload (bps)
+%================================================================================
+
+%--- Tabela de Clientes ---
+\begin{table}[H]
+\centering
+\caption{Clientes: Throughput de Upload (bps)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+ & client01 & client02 & client03 & client04 & client05 & client06 & client07 & client08 & client09 & client10 & client11 & client12 & client13 \\
+\midrule
+Média & $7.1405 \times 10^{8}$ & $5.6195 \times 10^{8}$ & $5.2097 \times 10^{8}$ & $5.4896 \times 10^{8}$ & $3.4775 \times 10^{8}$ & $6.0767 \times 10^{8}$ & $4.9190 \times 10^{8}$ & $2.2590 \times 10^{8}$ & $4.5265 \times 10^{8}$ & $3.7348 \times 10^{7}$ & $2.6739 \times 10^{8}$ & $9.2171 \times 10^{7}$ & $2.9476 \times 10^{8}$ \\
+Variância & $8.2808 \times 10^{16}$ & $4.4978 \times 10^{16}$ & $4.4037 \times 10^{16}$ & $6.0911 \times 10^{16}$ & $1.2322 \times 10^{17}$ & $6.5248 \times 10^{16}$ & $3.6891 \times 10^{16}$ & $6.2281 \times 10^{16}$ & $1.5079 \times 10^{17}$ & $8.5773 \times 10^{13}$ & $2.7214 \times 10^{16}$ & $9.2411 \times 10^{14}$ & $2.7463 \times 10^{14}$ \\
+Desvio-padrão & $2.8776 \times 10^{8}$ & $2.1208 \times 10^{8}$ & $2.0985 \times 10^{8}$ & $2.4680 \times 10^{8}$ & $3.5102 \times 10^{8}$ & $2.5544 \times 10^{8}$ & $1.9207 \times 10^{8}$ & $2.4956 \times 10^{8}$ & $3.8832 \times 10^{8}$ & $9.2614 \times 10^{6}$ & $1.6497 \times 10^{8}$ & $3.0399 \times 10^{7}$ & $1.6572 \times 10^{7}$ \\
+0-percentil (mínimo) & $9.2257 \times 10^{7}$ & $9.1116 \times 10^{7}$ & $7.9051 \times 10^{7}$ & $4.3690 \times 10^{7}$ & $8.9924 \times 10^{7}$ & $9.7376 \times 10^{6}$ & $3.3369 \times 10^{5}$ & $4.3434 \times 10^{7}$ & $8.2159 \times 10^{5}$ & $2.4685 \times 10^{6}$ & $5.3761 \times 10^{6}$ & $2.6615 \times 10^{6}$ & $5.6826 \times 10^{7}$ \\
+25-percentil & $6.8290 \times 10^{8}$ & $4.8811 \times 10^{8}$ & $3.7226 \times 10^{8}$ & $1.8729 \times 10^{8}$ & $1.0823 \times 10^{8}$ & $4.3375 \times 10^{8}$ & $4.2668 \times 10^{8}$ & $9.7086 \times 10^{7}$ & $8.7281 \times 10^{7}$ & $3.3408 \times 10^{7}$ & $6.5116 \times 10^{7}$ & $7.0910 \times 10^{7}$ & $2.9679 \times 10^{8}$ \\
+50-percentil (mediana) & $8.7879 \times 10^{8}$ & $6.2959 \times 10^{8}$ & $5.9223 \times 10^{8}$ & $6.2109 \times 10^{8}$ & $1.0859 \times 10^{8}$ & $7.3887 \times 10^{8}$ & $5.5086 \times 10^{8}$ & $9.7324 \times 10^{7}$ & $1.9018 \times 10^{8}$ & $4.0740 \times 10^{7}$ & $3.8295 \times 10^{8}$ & $9.5989 \times 10^{7}$ & $2.9895 \times 10^{8}$ \\
+75-percentil & $9.0471 \times 10^{8}$ & $7.0737 \times 10^{8}$ & $6.9268 \times 10^{8}$ & $7.2574 \times 10^{8}$ & $8.3417 \times 10^{8}$ & $7.8557 \times 10^{8}$ & $6.1458 \times 10^{8}$ & $1.8818 \times 10^{8}$ & $8.9756 \times 10^{8}$ & $4.4590 \times 10^{7}$ & $4.0722 \times 10^{8}$ & $1.1336 \times 10^{8}$ & $3.0065 \times 10^{8}$ \\
+100-percentil (máximo) & $9.2008 \times 10^{8}$ & $9.1562 \times 10^{8}$ & $9.0524 \times 10^{8}$ & $8.9708 \times 10^{8}$ & $9.1241 \times 10^{8}$ & $9.0018 \times 10^{8}$ & $8.6034 \times 10^{8}$ & $9.0690 \times 10^{8}$ & $9.2145 \times 10^{8}$ & $4.6522 \times 10^{7}$ & $4.2422 \times 10^{8}$ & $1.7088 \times 10^{8}$ & $3.0286 \times 10^{8}$ \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+%--- Tabela de Servidores ---
+\begin{table}[H]
+\centering
+\caption{Servidores: Throughput de Upload (bps)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & server01 & server02 & server03 & server04 & server05 & server06 & server07 \\
+\midrule
+Média & $4.3709 \times 10^{8}$ & $4.4023 \times 10^{8}$ & $4.4824 \times 10^{8}$ & $1.5729 \times 10^{8}$ & $1.5827 \times 10^{8}$ & $1.5771 \times 10^{8}$ & $4.4903 \times 10^{8}$ \\
+Variância & $9.6584 \times 10^{16}$ & $1.0992 \times 10^{17}$ & $1.0620 \times 10^{17}$ & $8.2046 \times 10^{15}$ & $8.7348 \times 10^{15}$ & $9.7772 \times 10^{15}$ & $9.2975 \times 10^{16}$ \\
+Desvio-padrão & $3.1078 \times 10^{8}$ & $3.3154 \times 10^{8}$ & $3.2589 \times 10^{8}$ & $9.0579 \times 10^{7}$ & $9.3460 \times 10^{7}$ & $9.8880 \times 10^{7}$ & $3.0492 \times 10^{8}$ \\
+0-percentil (mínimo) & $1.3829 \times 10^{7}$ & $1.3899 \times 10^{7}$ & $9.7376 \times 10^{6}$ & $1.0165 \times 10^{6}$ & $2.5015 \times 10^{6}$ & $3.3369 \times 10^{5}$ & $1.4253 \times 10^{6}$ \\
+25-percentil & $9.8074 \times 10^{7}$ & $9.7112 \times 10^{7}$ & $9.9091 \times 10^{7}$ & $7.7956 \times 10^{7}$ & $7.9629 \times 10^{7}$ & $6.9732 \times 10^{7}$ & $1.0850 \times 10^{8}$ \\
+50-percentil (mediana) & $4.2085 \times 10^{8}$ & $4.3072 \times 10^{8}$ & $4.4823 \times 10^{8}$ & $1.8192 \times 10^{8}$ & $1.8116 \times 10^{8}$ & $1.8131 \times 10^{8}$ & $5.1321 \times 10^{8}$ \\
+75-percentil & $7.1157 \times 10^{8}$ & $7.6163 \times 10^{8}$ & $7.6033 \times 10^{8}$ & $1.8915 \times 10^{8}$ & $1.8930 \times 10^{8}$ & $1.8906 \times 10^{8}$ & $7.2112 \times 10^{8}$ \\
+100-percentil (máximo) & $9.1282 \times 10^{8}$ & $9.1455 \times 10^{8}$ & $9.1623 \times 10^{8}$ & $4.2187 \times 10^{8}$ & $4.2201 \times 10^{8}$ & $4.2384 \times 10^{8}$ & $9.2145 \times 10^{8}$ \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+
+%================================================================================
+%Estatísticas para: RTT de Download (s)
+%================================================================================
+
+%--- Tabela de Clientes ---
+\begin{table}[H]
+\centering
+\caption{Clientes: RTT de Download (s)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+ & client01 & client02 & client03 & client04 & client05 & client06 & client07 & client08 & client09 & client10 & client11 & client12 & client13 \\
+\midrule
+Média & 0.0449 & 0.0391 & 0.0445 & 0.0513 & 0.0452 & 0.0466 & 0.0464 & 0.0544 & 0.0450 & 0.0872 & 0.0129 & 0.0865 & 0.0117 \\
+Variância & 0.0029 & 0.0027 & 0.0032 & 0.0031 & 0.0030 & 0.0032 & 0.0033 & 0.0045 & 0.0030 & 0.0107 & $3.8896 \times 10^{-5}$ & 0.0108 & $3.1942 \times 10^{-5}$ \\
+Desvio-padrão & 0.0537 & 0.0524 & 0.0562 & 0.0552 & 0.0548 & 0.0565 & 0.0576 & 0.0673 & 0.0548 & 0.1033 & 0.0062 & 0.1038 & 0.0057 \\
+0-percentil (mínimo) & 0.0040 & 0.0027 & 0.0030 & 0.0058 & 0.0030 & 0.0020 & 0.0053 & 0.0030 & 0.0023 & 0.0050 & 0.0079 & 0.0041 & 0.0070 \\
+25-percentil & 0.0054 & 0.0036 & 0.0043 & 0.0069 & 0.0041 & 0.0037 & 0.0075 & 0.0049 & 0.0038 & 0.0097 & 0.0100 & 0.0065 & 0.0090 \\
+50-percentil (mediana) & 0.0110 & 0.0100 & 0.0100 & 0.0120 & 0.0100 & 0.0099 & 0.0130 & 0.0100 & 0.0100 & 0.0152 & 0.0130 & 0.0146 & 0.0119 \\
+75-percentil & 0.1160 & 0.1147 & 0.1152 & 0.1179 & 0.1150 & 0.1150 & 0.1180 & 0.1158 & 0.1154 & 0.2202 & 0.0150 & 0.2185 & 0.0140 \\
+100-percentil (máximo) & 0.2245 & 0.2238 & 0.2244 & 0.2225 & 0.2239 & 0.2224 & 0.2274 & 0.2240 & 0.2245 & 0.3981 & 0.1328 & 0.3478 & 0.1170 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+%--- Tabela de Servidores ---
+\begin{table}[H]
+\centering
+\caption{Servidores: RTT de Download (s)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & server01 & server02 & server03 & server04 & server05 & server06 & server07 \\
+\midrule
+Média & 0.0113 & 0.0114 & 0.0115 & 0.1278 & 0.1231 & 0.1295 & 0.0296 \\
+Variância & $5.1982 \times 10^{-6}$ & $6.4579 \times 10^{-6}$ & $6.0895 \times 10^{-6}$ & 0.0044 & 0.0046 & 0.0050 & 0.0029 \\
+Desvio-padrão & 0.0023 & 0.0025 & 0.0025 & 0.0666 & 0.0676 & 0.0710 & 0.0537 \\
+0-percentil (mínimo) & 0.0070 & 0.0070 & 0.0070 & 0.0080 & 0.0080 & 0.0090 & 0.0020 \\
+25-percentil & 0.0100 & 0.0100 & 0.0100 & 0.1150 & 0.1150 & 0.1150 & 0.0044 \\
+50-percentil (mediana) & 0.0110 & 0.0110 & 0.0110 & 0.1184 & 0.1189 & 0.1188 & 0.0090 \\
+75-percentil & 0.0130 & 0.0128 & 0.0130 & 0.1247 & 0.1230 & 0.2162 & 0.0148 \\
+100-percentil (máximo) & 0.0191 & 0.0243 & 0.0209 & 0.2918 & 0.3478 & 0.3981 & 0.3531 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+
+%================================================================================
+%Estatísticas para: RTT de Upload (s)
+%================================================================================
+
+%--- Tabela de Clientes ---
+\begin{table}[H]
+\centering
+\caption{Clientes: RTT de Upload (s)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+ & client01 & client02 & client03 & client04 & client05 & client06 & client07 & client08 & client09 & client10 & client11 & client12 & client13 \\
+\midrule
+Média & 0.0313 & 0.0294 & 0.0330 & 0.0376 & 0.0297 & 0.0337 & 0.0345 & 0.0408 & 0.0339 & 0.0677 & 0.0152 & 0.0735 & 0.0130 \\
+Variância & 0.0022 & 0.0023 & 0.0026 & 0.0026 & 0.0022 & 0.0027 & 0.0027 & 0.0039 & 0.0026 & 0.0088 & $8.3307 \times 10^{-5}$ & 0.0095 & $2.4909 \times 10^{-5}$ \\
+Desvio-padrão & 0.0465 & 0.0481 & 0.0505 & 0.0507 & 0.0472 & 0.0516 & 0.0515 & 0.0621 & 0.0506 & 0.0937 & 0.0091 & 0.0972 & 0.0050 \\
+0-percentil (mínimo) & 0.0040 & 0.0027 & 0.0030 & 0.0058 & 0.0030 & 0.0027 & 0.0050 & 0.0039 & 0.0020 & 0.0058 & 0.0086 & 0.0062 & 0.0077 \\
+25-percentil & 0.0048 & 0.0034 & 0.0037 & 0.0066 & 0.0033 & 0.0031 & 0.0073 & 0.0043 & 0.0031 & 0.0112 & 0.0122 & 0.0115 & 0.0097 \\
+50-percentil (mediana) & 0.0064 & 0.0042 & 0.0044 & 0.0084 & 0.0041 & 0.0039 & 0.0090 & 0.0059 & 0.0042 & 0.0165 & 0.0155 & 0.0173 & 0.0143 \\
+75-percentil & 0.0124 & 0.0110 & 0.0121 & 0.1170 & 0.0106 & 0.0135 & 0.0138 & 0.1150 & 0.0140 & 0.0332 & 0.0164 & 0.2191 & 0.0150 \\
+100-percentil (máximo) & 0.2210 & 0.2236 & 0.2251 & 0.2266 & 0.2194 & 0.2236 & 0.2273 & 0.2259 & 0.2239 & 0.3421 & 0.1940 & 0.3602 & 0.0894 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+%--- Tabela de Servidores ---
+\begin{table}[H]
+\centering
+\caption{Servidores: RTT de Upload (s)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & server01 & server02 & server03 & server04 & server05 & server06 & server07 \\
+\midrule
+Média & 0.0126 & 0.0131 & 0.0129 & 0.1291 & 0.1240 & 0.1309 & 0.0076 \\
+Variância & $1.6128 \times 10^{-5}$ & $1.8477 \times 10^{-5}$ & $1.8563 \times 10^{-5}$ & 0.0046 & 0.0047 & 0.0052 & $2.6215 \times 10^{-5}$ \\
+Desvio-padrão & 0.0040 & 0.0043 & 0.0043 & 0.0678 & 0.0688 & 0.0723 & 0.0051 \\
+0-percentil (mínimo) & 0.0078 & 0.0079 & 0.0077 & 0.0088 & 0.0092 & 0.0091 & 0.0020 \\
+25-percentil & 0.0101 & 0.0102 & 0.0100 & 0.1153 & 0.1150 & 0.1153 & 0.0037 \\
+50-percentil (mediana) & 0.0111 & 0.0112 & 0.0112 & 0.1188 & 0.1188 & 0.1190 & 0.0054 \\
+75-percentil & 0.0137 & 0.0141 & 0.0142 & 0.1239 & 0.1230 & 0.2194 & 0.0113 \\
+100-percentil (máximo) & 0.0373 & 0.0285 & 0.0326 & 0.3552 & 0.3602 & 0.3421 & 0.0801 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+
+%================================================================================
+%Estatísticas para: Perda de Pacotes (por cento)
+%================================================================================
+
+%--- Tabela de Clientes ---
+\begin{table}[H]
+\centering
+\caption{Clientes: Perda de Pacotes (por cento)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+ & client01 & client02 & client03 & client04 & client05 & client06 & client07 & client08 & client09 & client10 & client11 & client12 & client13 \\
+\midrule
+Média & 5.2409 & 7.8143 & 6.7809 & 5.2296 & 63.1194 & 8.3371 & 5.3250 & 50.6100 & 4.8326 & 14.8035 & 11.9716 & 0.6380 & 53.3610 \\
+Variância & 277.9312 & 352.6419 & 206.2063 & 172.6312 & 2799.1601 & 103.3602 & 242.5591 & 3689.7261 & 191.3802 & 826.9888 & 377.8096 & 18.4978 & 146.7847 \\
+Desvio-padrão & 16.6713 & 18.7788 & 14.3599 & 13.1389 & 52.9071 & 10.1666 & 15.5743 & 60.7431 & 13.8340 & 28.7574 & 19.4373 & 4.3009 & 12.1155 \\
+0-percentil (mínimo) & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+25-percentil & 0.0000 & 0.2119 & 0.0259 & 0.0000 & 0.3177 & 0.0000 & 0.0594 & 9.2392 & 0.0160 & 0.0000 & 0.0474 & 0.0000 & 43.4449 \\
+50-percentil (mediana) & 0.0545 & 0.6541 & 0.7498 & 0.5063 & 82.4931 & 7.2296 & 0.8848 & 33.3484 & 0.7177 & 0.0745 & 5.4098 & 0.0602 & 55.4546 \\
+75-percentil & 5.4084 & 9.6036 & 10.8872 & 6.1789 & 105.3481 & 12.9919 & 5.4127 & 49.0067 & 4.9966 & 10.7292 & 12.1831 & 0.5839 & 63.3759 \\
+100-percentil (máximo) & 175.2610 & 200.3713 & 152.1266 & 144.8747 & 170.0091 & 86.1353 & 197.5455 & 223.8909 & 163.6750 & 192.9226 & 102.6334 & 85.8884 & 85.7126 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+%--- Tabela de Servidores ---
+\begin{table}[H]
+\centering
+\caption{Servidores: Perda de Pacotes (por cento)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & server01 & server02 & server03 & server04 & server05 & server06 & server07 \\
+\midrule
+Média & 22.5718 & 19.9099 & 21.3003 & 19.4413 & 27.4709 & 19.5209 & 16.6675 \\
+Variância & 783.9388 & 812.9001 & 854.1735 & 1576.5824 & 2681.7480 & 1795.2553 & 969.6283 \\
+Desvio-padrão & 27.9989 & 28.5114 & 29.2262 & 39.7062 & 51.7856 & 42.3705 & 31.1389 \\
+0-percentil (mínimo) & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+25-percentil & 4.9429 & 3.0693 & 3.3317 & 0.0000 & 0.0000 & 0.0000 & 0.0890 \\
+50-percentil (mediana) & 10.1619 & 8.0559 & 8.3386 & 0.0000 & 0.0000 & 0.0000 & 0.8925 \\
+75-percentil & 33.3137 & 19.8848 & 27.7556 & 14.1138 & 37.4764 & 12.5281 & 18.0559 \\
+100-percentil (máximo) & 152.1266 & 200.3713 & 182.8219 & 204.7693 & 223.8909 & 207.1563 & 218.5718 \\
+\bottomrule
+\end{tabular}
+
+}
+\end{table}
+\clearpage
+
+\end{document}
