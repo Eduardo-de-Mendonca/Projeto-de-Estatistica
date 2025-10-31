@@ -419,7 +419,7 @@ class AllData:
             'throughput_up': 'Throughput de Upload (bps)',
             'rtt_down': 'RTT de Download (s)',
             'rtt_up': 'RTT de Upload (s)',
-            'packet_loss': 'Perda de Pacotes (por cento)'
+            'packet_loss': f'Pacotes perdidos (de um total de {BINOMIAL_FIXED_N})'
         }
 
         for var_name, var_title in variables.items():
@@ -550,10 +550,7 @@ class AllData:
                 model_class = var_info['model_mle']
                 
                 assert issubclass(model_class, Model)
-                if model_class == BinomialModel:
-                    model_mle = model_class.from_mle(var_data)
-                else:
-                    model_mle = model_class.from_mle(var_data)
+                model_mle = model_class.from_mle(var_data)
                 
                 results.write(f"{var_key}: {model_mle}")
             results.skipline()
