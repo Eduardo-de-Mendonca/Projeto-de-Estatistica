@@ -1,4 +1,5 @@
-from models import *
+from Models.models import *
+from Models.settings import *
 
 def choose_prior(mle_model):
     '''

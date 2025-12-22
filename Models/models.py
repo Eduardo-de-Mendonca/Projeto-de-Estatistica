@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
 
-from settings import *
+from Models.settings import *
 
 class VariableData:
     'Representa uma lista de dados associada a uma variável específica'

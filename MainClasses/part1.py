@@ -3,61 +3,12 @@ import pandas as pd
 import re
 import os
 
-from utilities import *
+from Models.results import Results
+from Models.models import *
 
-VAR_DETAILS = {
-    'throughput_down': {
-        'name': 'Throughput de Download',
-        'unit': 'bps', 
-        'model_mle': GammaModel, 
-    },
-    'throughput_up':   {
-        'name': 'Throughput de Upload',
-        'unit': 'bps', 
-        'model_mle': GammaModel, 
-    },
-    'rtt_down':        {
-        'name': 'RTT de Download',
-        'unit': 's', 
-        'model_mle': NormalModel, 
-    },
-    'rtt_up':          {
-        'name': 'RTT de Upload',
-        'unit': 's', 
-        'model_mle': NormalModel, 
-    },
-    'packet_loss':     {
-        'name': f'Perda de Pacotes (contagem de {BINOMIAL_FIXED_N})',
-        'unit': '(quantidade)', 
-        'model_mle': BinomialModel, 
-    }
-}
-
-class Results:
-    'Para guardar os resultados e escrever em um arquivo'
-    def __init__(self): self.string = ''
-
-    def write(self, a): self.string += f'{a}\n'
-
-    def skipline(self): self.string += '\n'
-
-    def generate_file(self, file_name):
-        with open(file_name, 'w', encoding='utf-8') as file:
-            file.write(self.string)
-    
-class NetworkEntity:
-    'Representa uma entidade de rede (cliente ou servidor)'
-    def __init__(self):
-        # Em bps
-        self.throughput_down = VariableData()
-        self.throughput_up = VariableData()
-
-        # Em segundos
-        self.rtt_down = VariableData()
-        self.rtt_up = VariableData()
-
-        # Em %
-        self.packet_loss = VariableData()
+from NetworkEntity.utilities import *
+from NetworkEntity.network_entity import NetworkEntity
+from NetworkEntity.settings import *
 
 class GraphGenerator:
     '''
@@ -239,8 +190,8 @@ class GraphGenerator:
                     model_mle
                 )
 
-class AllData:
-    def __init__(self, path):
+class Part1:
+    def __init__(self, in_path: str, out_path: str):
         '''
         Lê o CSV.
         Calcula quantos servidores há e quantos clientes há.
@@ -249,8 +200,9 @@ class AllData:
         '''
         self.clients = {}
         self.servers = {}
+        self.out_path = out_path
 
-        with open(path, 'r', encoding='utf-8', newline='') as file:
+        with open(in_path, 'r', encoding='utf-8', newline='') as file:
             reader = csv.reader(file)
             header = next(reader, None) # Pula o cabeçalho
 
@@ -476,7 +428,7 @@ class AllData:
         results.generate_file(out_path)
 
     def write_latex_tables(self):
-        out_path = 'Output/descriptive_statistic.tex'
+        out_path = f'{self.out_path}/descriptive_statistic.tex'
         percentile_list = [0, 25, 50, 75, 100]
 
         self.__write_descriptive_statistics(out_path, percentile_list)
@@ -486,7 +438,7 @@ class AllData:
         Escreve em um arquivo a quantidade de linhas de dados para cada cliente/servidor, para ajudar a selecionar os melhores
         '''
 
-        out_path = 'Output/amount_of_points.txt'
+        out_path = f'{self.out_path}/amount_of_points.txt'
 
         result = Results()
         for name, obj in self.clients.items():
@@ -508,7 +460,10 @@ class AllData:
         # --- 1. Selecionar os objetos ---
         client_name_to_select = 'client13'
         server_name_to_select = 'server07'
-        output_dir = 'Output/Graphs'
+        output_dir = f'{self.out_path}/Graphs'
+
+        # Criar a pasta, se já não existe
+        os.makedirs(output_dir, exist_ok=True)
 
         client_obj = self.clients[client_name_to_select]
 
@@ -555,13 +510,16 @@ class AllData:
                 results.write(f"{var_key}: {model_mle}")
             results.skipline()
         
-        results.generate_file('Output/mle_models.txt')
+        results.generate_file(f'{self.out_path}/mle_models.txt')
 
     def plot_mle_models(self):
         # --- 1. Selecionar os objetos ---
         client_name_to_select = 'client13'
         server_name_to_select = 'server07'
-        output_dir = 'Output/MLEgraphs'
+        output_dir = f'{self.out_path}/MLEgraphs'
+
+        # Criar a pasta, se ainda não existe
+        os.makedirs(output_dir, exist_ok=True)
 
         client_obj = self.clients[client_name_to_select]
 
@@ -647,7 +605,7 @@ class AllData:
                 
             results.skipline()
 
-        results.generate_file('Output/bayes_100_report.txt')
+        results.generate_file(f'{self.out_path}/bayes_100_report.txt')
 
     def run_bayesian_inference_70_30(self):
         """
@@ -718,4 +676,4 @@ class AllData:
 
             results.skipline()
         
-        results.generate_file('Output/bayes_70_30_report.txt')
+        results.generate_file(f'{self.out_path}/bayes_70_30_report.txt')

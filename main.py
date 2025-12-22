@@ -1,6 +1,6 @@
-from classes import *
+from MainClasses.part1 import Part1
 
-d = AllData('Data/ndt_tests_corrigido.csv')
+d = Part1('Data/ndt_tests_corrigido.csv', 'Output/Part1')
 d.write_latex_tables()
 d.write_amount_of_points()
 d.generate_plots_for_selection()
