@@ -1,0 +1,14 @@
+Atributo: throughput_up
+DEBUG: estamos usando apenas 0.005 dos dados
+
+Likelihood sob H0: 6.5897603310063795e-189
+Likelihood sob H1: 7.929581649251558e-185
+Razão: 8.31035056134186e-05
+-2 log Lambda: 18.79084734302457
+
+Estatística do teste (é pra dar igual): 0.08316837122738119
+p-valor: 0.7730487800694189
+Valor crítico: 3.841
+
+Se w <= valor crítico e p >= 0.05, não rejeitamos H0
+Se w > valor crítico e p < 0.05, rejeitamos H0

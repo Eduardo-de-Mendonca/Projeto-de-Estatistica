@@ -1,0 +1,14 @@
+Atributo: throughput_down
+DEBUG: estamos usando apenas 0.005 dos dados
+
+Likelihood sob H0: 2.1012148985703527e-193
+Likelihood sob H1: 2.0789118328417508e-187
+Razão: 1.0107282403112377e-06
+-2 log Lambda: 27.60967891383447
+
+Estatística do teste (é pra dar igual): 0.01698546551143828
+p-valor: 0.8963066916687256
+Valor crítico: 3.841
+
+Se w <= valor crítico e p >= 0.05, não rejeitamos H0
+Se w > valor crítico e p < 0.05, rejeitamos H0

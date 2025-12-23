@@ -26,7 +26,13 @@ class Part2q1:
         assert isinstance(self.client_data, VariableData)
         assert isinstance(self.server_data, VariableData)
 
+        # Com o setting de debug, usamos apenas 10 por cento dos dados
+        if DEBUG_USE_LESS_DATA:
+            self.client_data, _ = self.client_data.split_data(DEBUG_REDUCED_DATA_AMOUNT)
+            self.server_data, _ = self.server_data.split_data(DEBUG_REDUCED_DATA_AMOUNT)
+
         self.full_data = self.client_data.join_data(self.server_data)
+
         self.full_model = GammaModel.from_mle(self.full_data)
 
         # Calcular o MLE sob H_1
@@ -86,6 +92,10 @@ class Part2q1:
         r = Results()
 
         r.write(f'Atributo: {self.attribute}')
+        
+        if DEBUG_USE_LESS_DATA:
+            r.write(f'DEBUG: estamos usando apenas {DEBUG_REDUCED_DATA_AMOUNT} dos dados')
+
         r.skipline()
 
         h0l = self.H_0_likelihood()
