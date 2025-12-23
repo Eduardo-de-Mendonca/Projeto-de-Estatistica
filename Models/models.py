@@ -71,6 +71,14 @@ class VariableData:
         
         return vd_train, vd_test
 
+    def join_data(self, other):
+        '''
+        Retorna um novo VariableData, que é este concatenado com o outro
+        '''
+        result = VariableData()
+        result.data = self.data + other.data
+        return result
+
 class Model(ABC):
     @abstractmethod
     def draw(self, scale_factor): pass
@@ -294,6 +302,12 @@ class GammaModel(Model):
         b_n = self.beta + sum(variable_data.data)
         
         return GammaModel(a_n, b_n) # Retorna a posterior
+
+    def pdf(self, x: float):
+        '''
+        Retorna o valor da minha pdf, avaliada em x
+        '''
+        return gamma.pdf(x, a=self.k, loc=0, scale=1/self.beta)
 
 class BetaModel(Model):
     """Representa a distribuição Beta, usada como prior/posterior para Binomial."""

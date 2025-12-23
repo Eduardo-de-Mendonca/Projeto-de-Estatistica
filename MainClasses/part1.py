@@ -6,9 +6,11 @@ import os
 from Models.results import Results
 from Models.models import *
 
-from NetworkEntity.utilities import *
-from NetworkEntity.network_entity import NetworkEntity
-from NetworkEntity.settings import *
+from Utilities.utilities import choose_prior, read_data
+from Utilities.network_entity import NetworkEntity
+from Utilities.settings import *
+
+from MainClasses.settings import *
 
 class GraphGenerator:
     '''
@@ -195,63 +197,11 @@ class Part1:
         '''
         Lê o CSV.
         Calcula quantos servidores há e quantos clientes há.
-        Escreve em this.clients uma lista de objetos Client com os dados
-        Escreve em this.servers uma lista de objetos Server com os dados
+        Escreve em this.clients um dicionário de objetos Client com os dados
+        Escreve em this.servers um dicionátio de objetos Server com os dados
         '''
-        self.clients = {}
-        self.servers = {}
+        self.clients, self.servers = read_data(in_path)
         self.out_path = out_path
-
-        with open(in_path, 'r', encoding='utf-8', newline='') as file:
-            reader = csv.reader(file)
-            header = next(reader, None) # Pula o cabeçalho
-
-            for row in reader:
-                # Extrai e converte os dados da linha
-                download_throughput = float(row[1])
-                rtt_download = float(row[2])
-                upload_throughput = float(row[3])
-                rtt_upload = float(row[4])
-                packet_loss = float(row[5])
-                client_name = row[6]
-                server_name = row[7]
-
-                # Packet_loss é uma porcentagem. Transformaremos em uma quantidade de pacotes perdidos, multiplicando por fixed_n
-                packet_loss = (packet_loss/100)*BINOMIAL_FIXED_N
-
-                invalid = False
-                for x in download_throughput, rtt_download, upload_throughput, rtt_upload, packet_loss:
-                    if x < 0: invalid = True # Ignorar linhas com valor negativo
-                if invalid: continue
-
-                # Cria um novo objeto Client se for a primeira vez que o vemos
-                if client_name not in self.clients:
-                    self.clients[client_name] = NetworkEntity()
-                
-                # Cria um novo objeto Server se for a primeira vez que o vemos
-                if server_name not in self.servers:
-                    self.servers[server_name] = NetworkEntity()
-
-                # Obtém os objetos correspondentes para adicionar os novos dados
-                current_client = self.clients[client_name]
-                current_server = self.servers[server_name]
-
-                assert isinstance(current_client, NetworkEntity)
-                assert isinstance(current_server, NetworkEntity)
-
-                # Adiciona os dados ao cliente
-                current_client.throughput_down.data.append(download_throughput)
-                current_client.throughput_up.data.append(upload_throughput)
-                current_client.rtt_down.data.append(rtt_download)
-                current_client.rtt_up.data.append(rtt_upload)
-                current_client.packet_loss.data.append(packet_loss)
-
-                # Adiciona os dados ao servidor
-                current_server.throughput_down.data.append(download_throughput)
-                current_server.throughput_up.data.append(upload_throughput)
-                current_server.rtt_down.data.append(rtt_download)
-                current_server.rtt_up.data.append(rtt_upload)
-                current_server.packet_loss.data.append(packet_loss)
 
     def __format_latex_number(self, x):
         """
@@ -458,8 +408,8 @@ class Part1:
         o GraphGenerator para criar todos os gráficos.
         """
         # --- 1. Selecionar os objetos ---
-        client_name_to_select = 'client13'
-        server_name_to_select = 'server07'
+        client_name_to_select = CHOSEN_CLIENT
+        server_name_to_select = CHOSEN_SERVER
         output_dir = f'{self.out_path}/Graphs'
 
         # Criar a pasta, se já não existe
@@ -488,8 +438,8 @@ class Part1:
         Calcula e escreve todos os modelos MLE (usando __repr__) para 
         os clientes e servidores selecionados em um arquivo.
         """
-        client_name = 'client13'
-        server_name = 'server07'
+        client_name = CHOSEN_CLIENT
+        server_name = CHOSEN_SERVER
         entities = {
             client_name: self.clients[client_name],
             server_name: self.servers[server_name]
@@ -514,8 +464,8 @@ class Part1:
 
     def plot_mle_models(self):
         # --- 1. Selecionar os objetos ---
-        client_name_to_select = 'client13'
-        server_name_to_select = 'server07'
+        client_name_to_select = CHOSEN_CLIENT
+        server_name_to_select = CHOSEN_SERVER
         output_dir = f'{self.out_path}/MLEgraphs'
 
         # Criar a pasta, se ainda não existe
@@ -543,8 +493,8 @@ class Part1:
         E[theta|data] com o MLE.
         """
 
-        client_name = 'client13'
-        server_name = 'server07'
+        client_name = CHOSEN_CLIENT
+        server_name = CHOSEN_SERVER
         entities = {
             client_name: self.clients[client_name],
             server_name: self.servers[server_name]
@@ -611,8 +561,8 @@ class Part1:
         """
         Roda a inferência com 70% dos dados, calcula o preditivo e compara com os 30% de teste.
         """
-        client_name = 'client13'
-        server_name = 'server07'
+        client_name = CHOSEN_CLIENT
+        server_name = CHOSEN_SERVER
         entities = {
             client_name: self.clients[client_name],
             server_name: self.servers[server_name]
