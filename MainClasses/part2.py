@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from math import log
+from math import log, exp
 
 from Models.results import Results
 from Models.models import GammaModel
@@ -39,18 +39,25 @@ class Part2q1:
         self.client_model = GammaModel.from_mle(self.client_data)
         self.server_model = GammaModel.from_mle(self.server_data)
 
-    def H_0_likelihood(self):
+    def H_0_log_likelihood(self):
+        '''
+        Retorna ln da likelihood sob H0
+        '''
         model = self.full_model
         data = self.full_data
 
-        # Calcular a likelihood sob H_0
-        prod = 1
+        # Calcular a log likelihood sob H_0
+        result = 0
         for x in data.data:
-            prod *= model.pdf(x)
+            l = model.pdf(x)
+            result += log(l)
 
-        return prod
+        return result
     
-    def H_1_likelihood(self):
+    def H_1_log_likelihood(self):
+        '''
+        Retorna ln da likelihood sob H1
+        '''
         assert isinstance(self.client_data, VariableData)
         assert isinstance(self.server_data, VariableData)
 
@@ -59,13 +66,15 @@ class Part2q1:
         client_model = self.client_model
         server_model = self.server_model
 
-        prod = 1
+        result = 0
         for x in client_data.data:
-            prod *= client_model.pdf(x)
+            l = client_model.pdf(x)
+            result += log(l)
         for x in server_data.data:
-            prod *= server_model.pdf(x)
+            l = server_model.pdf(x)
+            result += log(l)
 
-        return prod
+        return result
     
     def statistic(self):
         assert isinstance(self.client_data, VariableData)
@@ -98,14 +107,15 @@ class Part2q1:
 
         r.skipline()
 
-        h0l = self.H_0_likelihood()
-        h1l = self.H_1_likelihood()
-        r.write(f'Likelihood sob H0: {h0l}')
-        r.write(f'Likelihood sob H1: {h1l}')
+        h0l = self.H_0_log_likelihood()
+        h1l = self.H_1_log_likelihood()
+        r.write(f'Log-likelihood sob H0: {h0l}')
+        r.write(f'Log-likelihood sob H1: {h1l}')
         
-        Lambda = h0l/h1l
-        r.write(f'Razão: {Lambda}')
-        r.write(f'-2 log Lambda: {-2*log(Lambda)}')
+        x = h0l - h1l
+        r.write(f'Subtração das log-likelihoods (log Lambda): {x}')
+        r.write(f'Lambda: {exp(x)}')
+        r.write(f'-2 log Lambda: {-2*x}')
         r.skipline()
 
         w = self.statistic()
