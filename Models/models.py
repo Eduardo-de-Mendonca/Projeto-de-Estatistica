@@ -249,6 +249,13 @@ class GammaModel(Model):
         beta = 1/scale
         return GammaModel(k, beta)
     
+    def from_mle_fixed_k(variable_data: VariableData, k: float):
+        for d in variable_data.data: assert d > 0
+
+        avg = variable_data.average()
+        beta_hat = k / avg
+        return GammaModel(k, beta_hat)
+
     def draw(self, scale_factor):
         """
         Desenha a PDF da Gamma sobre o histograma existente.

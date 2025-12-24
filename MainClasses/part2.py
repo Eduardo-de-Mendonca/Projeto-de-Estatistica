@@ -34,10 +34,11 @@ class Part2q1:
         self.full_data = self.client_data.join_data(self.server_data)
 
         self.full_model = GammaModel.from_mle(self.full_data)
+        k = self.full_model.k
 
         # Calcular o MLE sob H_1
-        self.client_model = GammaModel.from_mle(self.client_data)
-        self.server_model = GammaModel.from_mle(self.server_data)
+        self.client_model = GammaModel.from_mle_fixed_k(self.client_data, k)
+        self.server_model = GammaModel.from_mle_fixed_k(self.server_data, k)
 
     def H_0_log_likelihood(self):
         '''

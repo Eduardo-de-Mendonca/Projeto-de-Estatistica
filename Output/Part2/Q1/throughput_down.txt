@@ -1,10 +1,10 @@
 Atributo: throughput_down
 
 Log-likelihood sob H0: -92443.7534979182
-Log-likelihood sob H1: -91058.74747912548
-Subtração das log-likelihoods (log Lambda): -1385.0060187927156
-Lambda: 0.0
--2 log Lambda: 2770.0120375854312
+Log-likelihood sob H1: -92443.63897982256
+Subtração das log-likelihoods (log Lambda): -0.1145180956373224
+Lambda: 0.8917958006587398
+-2 log Lambda: 0.2290361912746448
 
 Estatística do teste (é pra dar igual): 0.22903619126391003
 p-valor: 0.6322394007853035
