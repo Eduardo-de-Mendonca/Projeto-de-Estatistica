@@ -20,8 +20,8 @@ d = Part2Q1('Data/ndt_tests_corrigido.csv', 'Output/Part2/Q1/throughput_up.txt',
 d.write()
 '''
 
-d = Part2Q2('Data/ndt_tests_corrigido.csv', 'Output/Part2/Q1/rtt_down.txt', 'rtt_down')
+d = Part2Q2('Data/ndt_tests_corrigido.csv', 'Output/Part2/Q2/rtt_down.txt', 'rtt_down')
 d.write()
 
-d = Part2Q2('Data/ndt_tests_corrigido.csv', 'Output/Part2/Q1/rtt_up.txt', 'rtt_up')
+d = Part2Q2('Data/ndt_tests_corrigido.csv', 'Output/Part2/Q2/rtt_up.txt', 'rtt_up')
 d.write()

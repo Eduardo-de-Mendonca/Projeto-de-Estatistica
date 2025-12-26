@@ -79,7 +79,7 @@ class VariableData:
         result.data = self.data + other.data
         return result
 
-class Model(ABC):
+class Model():
     def draw(self, scale_factor): raise NotImplementedError
 
     def from_mle(variable_data): raise NotImplementedError
