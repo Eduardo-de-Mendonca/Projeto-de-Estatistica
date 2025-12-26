@@ -1,4 +1,4 @@
-from math import isclose
+from math import isclose, pi, exp
 
 from scipy.stats import gamma, norm, binom
 from scipy import stats
@@ -80,15 +80,17 @@ class VariableData:
         return result
 
 class Model(ABC):
-    @abstractmethod
-    def draw(self, scale_factor): pass
+    def draw(self, scale_factor): raise NotImplementedError
 
-    @abstractmethod
-    def from_mle(variable_data): pass
+    def from_mle(variable_data): raise NotImplementedError
 
-    @abstractmethod
-    def draw_qq_plot(self, data, ax):
-        pass
+    def draw_qq_plot(self, data, ax): raise NotImplementedError
+
+    def pdf(self):
+        '''
+        Retorna o valor da minha pdf, avaliada em x
+        '''
+        raise NotImplementedError
 
 class NormalModel(Model):
     def __init__(self, average, std_dev):
@@ -101,6 +103,10 @@ class NormalModel(Model):
         std_dev = variable_data.variance()**(1/2)
         return NormalModel(avg, std_dev)
     
+    def from_mle_fixed_stddev(variable_data: VariableData, std_dev: float):
+        avg = variable_data.average()
+        return NormalModel(avg, std_dev)
+
     def draw(self, scale_factor):
         """
         Desenha a PDF da Normal sobre o histograma existente, multiplicada por um fator de escala (o qual deve ser calculado pelo caller para alinhar a PDF ao histograma)
@@ -130,6 +136,15 @@ class NormalModel(Model):
         
         plt.savefig(filename)
         plt.close()
+
+    def pdf(self, x):
+        sigma = self.std_dev
+        mu = self.average
+
+        factor1 = 1/((2*pi*(sigma**2)))
+        exponent = - ((x - mu)**2)/(2*(sigma**2))
+        factor2 = exp(exponent)
+        return factor1*factor2
 
     def expected_value(self):
         """Retorna o valor esperado da distribuição"""
@@ -310,10 +325,7 @@ class GammaModel(Model):
         
         return GammaModel(a_n, b_n) # Retorna a posterior
 
-    def pdf(self, x: float):
-        '''
-        Retorna o valor da minha pdf, avaliada em x
-        '''
+    def pdf(self, x):
         return gamma.pdf(x, a=self.k, loc=0, scale=1/self.beta)
 
 class BetaModel(Model):
@@ -324,18 +336,6 @@ class BetaModel(Model):
 
     def __repr__(self):
         return f"BetaModel(a={self.a}, b={self.b})"
-
-    def from_mle(variable_data):
-        # Não aplicável, esta classe não é um fit MLE de dados
-        raise RuntimeError('Não implementado')
-
-    def draw(self, scale_factor):
-        # Não aplicável, prior/posterior não é desenhada sobre histograma
-        raise RuntimeError('Não implementado')
-    
-    def draw_qq_plot(self, data, filename):
-        # Não aplicável
-        raise RuntimeError('Não implementado')
 
     # --- NOVOS MÉTODOS BAYESIANOS ---
     def expected_value(self):
@@ -392,13 +392,6 @@ class BetaBinomialPredictiveModel(Model):
         assert den != 0
 
         return num / den
-        
-    def from_mle(variable_data):
-        raise NotImplementedError
-    def draw(self, scale_factor):
-        raise NotImplementedError
-    def draw_qq_plot(self, data, filename):
-        raise NotImplementedError
     
 class ScaledBetaPrimePredictiveModel(Model):
     """ 
@@ -433,9 +426,3 @@ class ScaledBetaPrimePredictiveModel(Model):
 
         return num / den
         
-    def from_mle(variable_data):
-        raise NotImplementedError
-    def draw(self, scale_factor):
-        raise NotImplementedError
-    def draw_qq_plot(self, data, filename):
-        raise NotImplementedError

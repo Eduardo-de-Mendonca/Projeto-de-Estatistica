@@ -1,0 +1,14 @@
+Atributo: rtt_down
+
+Log-likelihood sob H0: 16027.428052856081
+Log-likelihood sob H1: 16062.535517617407
+Subtração das log-likelihoods (log Lambda): -35.1074647613259
+Lambda: 5.6626768753082065e-16
+-2 log Lambda: 70.2149295226518
+
+Estatística do teste (é pra dar igual): 70.21492952220031
+p-valor: 0.0
+Valor crítico: 3.841
+
+Se w <= valor crítico e p >= 0.05, não rejeitamos H0
+Se w > valor crítico e p < 0.05, rejeitamos H0
